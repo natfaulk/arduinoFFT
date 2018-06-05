@@ -21,22 +21,14 @@
 
 #ifndef arduinoFFT_h /* Prevent loading library twice */
 #define arduinoFFT_h
-#ifdef ARDUINO
-	#if ARDUINO >= 100
-		#include "Arduino.h"
-	#else
-		#include "WProgram.h" /* This is where the standard Arduino code lies */
-	#endif
-#else
-	#include <stdlib.h>
-	#include <stdio.h>
-	#ifdef __AVR__
-		#include <avr/io.h>
-	#endif
+
+#include <stdint.h>
+
+	// #include <stdlib.h>
+	// #include <stdio.h>
 	#include <math.h>
-	#include "defs.h"
-	#include "types.h"
-#endif
+	// #include "defs.h"
+	// #include "types.h"
 
 #define FFT_LIB_REV 0x14
 /* Custom constants */
@@ -55,35 +47,10 @@
 #define twoPi 6.28318531
 #define fourPi 12.56637061
 
-class arduinoFFT {
-public:
-	/* Constructor */
-	arduinoFFT(void);
-	arduinoFFT(double *vReal, double *vImag, uint16_t samples, double samplingFrequency);
-	/* Destructor */
-	~arduinoFFT(void);
-	/* Functions */
-	uint8_t Revision(void);
-	uint8_t Exponent(uint16_t value);
-	void ComplexToMagnitude(double *vReal, double *vImag, uint16_t samples);
-	void Compute(double *vReal, double *vImag, uint16_t samples, uint8_t dir);
-	void Compute(double *vReal, double *vImag, uint16_t samples, uint8_t power, uint8_t dir);
-	double MajorPeak(double *vD, uint16_t samples, double samplingFrequency);
-	void Windowing(double *vData, uint16_t samples, uint8_t windowType, uint8_t dir);
-	void ComplexToMagnitude();
-	void Compute(uint8_t dir);
-	double MajorPeak();
-	void Windowing(uint8_t windowType, uint8_t dir);
-
-private:
-	/* Variables */
-	uint16_t _samples;
-	double _samplingFrequency;
-	double *_vReal;
-	double *_vImag;
-	uint8_t _power;
-	/* Functions */
-	void Swap(double *x, double *y);
-};
+void FFT_Init(double *vReal, double *vImag, uint16_t samples, double samplingFrequency);
+void FFT_Compute(uint8_t dir);
+void FFT_ComplexToMagnitude();
+void FFT_Windowing(uint8_t windowType, uint8_t dir);
+double FFT_MajorPeak();
 
 #endif
